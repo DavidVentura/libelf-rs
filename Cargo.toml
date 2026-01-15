@@ -1,0 +1,18 @@
+[package]
+name = "elf"
+version = "0.1.0"
+edition = "2024"
+description = "Drop-in replacement for libelf using the object crate"
+license = "MIT OR Apache-2.0"
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+object = { version = "0.36", default-features = false, features = ["read", "write", "elf"] }
+libc = "0.2"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 2
