@@ -3,13 +3,15 @@
 
 mod error;
 mod handle;
-mod read;
-mod types;
-mod write;
+pub mod read;
+pub mod types;
+pub mod write;
 
-pub use error::{elf_errmsg, elf_errno};
+// Re-export types
 pub use handle::{Elf, Elf_Scn};
-//pub use read::*;
-pub use read::{Elf64_Ehdr, Elf64_Shdr};
 pub use types::*;
-//pub use write::*;
+
+// Re-export C API functions so cbindgen can find them
+pub use error::{elf_errmsg, elf_errno};
+pub use read::*;   // All read functions
+pub use write::*;  // All write functions

@@ -15,12 +15,6 @@ pub fn set_error(msg: &str) {
     });
 }
 
-pub fn clear_error() {
-    LAST_ERROR.with(|e| {
-        *e.borrow_mut() = None;
-    });
-}
-
 pub fn get_error_ptr() -> *const i8 {
     LAST_ERROR.with(|e| {
         e.borrow()

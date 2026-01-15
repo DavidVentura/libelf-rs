@@ -6,7 +6,7 @@ use object::{Architecture, BinaryFormat, Endianness};
 use std::ffi::c_void;
 use std::ptr;
 
-pub type Elf64_Ehdr = object::elf::FileHeader64<Endianness>;
+type Elf64_Ehdr = object::elf::FileHeader64<Endianness>;
 
 fn ensure_writer(elf: &mut Elf) -> bool {
     if elf.writer.is_some() {

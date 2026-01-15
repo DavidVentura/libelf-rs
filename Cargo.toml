@@ -4,13 +4,17 @@ version = "0.1.0"
 edition = "2024"
 description = "Drop-in replacement for libelf using the object crate"
 license = "MIT OR Apache-2.0"
+links = "elf"
 
 [lib]
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["staticlib", "cdylib", "rlib"]
 
 [dependencies]
 object = { version = "0.36", default-features = false, features = ["read", "write", "elf"] }
 libc = "0.2"
+
+[build-dependencies]
+cbindgen = "0.27"
 
 [profile.release]
 lto = true
