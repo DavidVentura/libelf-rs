@@ -13,5 +13,5 @@ pub use types::*;
 
 // Re-export C API functions so cbindgen can find them
 pub use error::{elf_errmsg, elf_errno};
-pub use read::*;   // All read functions
-pub use write::*;  // All write functions
+pub use read::*;
+pub use write::*;

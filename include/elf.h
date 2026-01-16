@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 
-/* 64-bit ELF base types */
 typedef uint64_t Elf64_Addr;
 typedef uint16_t Elf64_Half;
 typedef uint64_t Elf64_Off;
@@ -13,17 +12,94 @@ typedef int64_t  Elf64_Sxword;
 typedef uint32_t Elf64_Word;
 typedef uint64_t Elf64_Xword;
 
-/* Relative relocation type */
 typedef Elf64_Xword Elf64_Relr;
 
-/* 32-bit ELF base types */
 typedef uint32_t Elf32_Addr;
 typedef uint16_t Elf32_Half;
 typedef uint32_t Elf32_Off;
 typedef int32_t  Elf32_Sword;
 typedef uint32_t Elf32_Word;
 
-/* 64-bit ELF header */
+typedef struct {
+    unsigned char e_ident[16];
+    Elf32_Half    e_type;
+    Elf32_Half    e_machine;
+    Elf32_Word    e_version;
+    Elf32_Addr    e_entry;
+    Elf32_Off     e_phoff;
+    Elf32_Off     e_shoff;
+    Elf32_Word    e_flags;
+    Elf32_Half    e_ehsize;
+    Elf32_Half    e_phentsize;
+    Elf32_Half    e_phnum;
+    Elf32_Half    e_shentsize;
+    Elf32_Half    e_shnum;
+    Elf32_Half    e_shstrndx;
+} Elf32_Ehdr;
+
+typedef struct {
+    Elf32_Word    sh_name;
+    Elf32_Word    sh_type;
+    Elf32_Word    sh_flags;
+    Elf32_Addr    sh_addr;
+    Elf32_Off     sh_offset;
+    Elf32_Word    sh_size;
+    Elf32_Word    sh_link;
+    Elf32_Word    sh_info;
+    Elf32_Word    sh_addralign;
+    Elf32_Word    sh_entsize;
+} Elf32_Shdr;
+
+typedef struct {
+    Elf32_Word    st_name;
+    Elf32_Addr    st_value;
+    Elf32_Word    st_size;
+    unsigned char st_info;
+    unsigned char st_other;
+    Elf32_Half    st_shndx;
+} Elf32_Sym;
+
+typedef struct {
+    Elf32_Addr    r_offset;
+    Elf32_Word    r_info;
+} Elf32_Rel;
+
+typedef struct {
+    Elf32_Addr    r_offset;
+    Elf32_Word    r_info;
+    Elf32_Sword   r_addend;
+} Elf32_Rela;
+
+typedef struct {
+    Elf32_Word    p_type;
+    Elf32_Off     p_offset;
+    Elf32_Addr    p_vaddr;
+    Elf32_Addr    p_paddr;
+    Elf32_Word    p_filesz;
+    Elf32_Word    p_memsz;
+    Elf32_Word    p_flags;
+    Elf32_Word    p_align;
+} Elf32_Phdr;
+
+typedef struct {
+    Elf32_Word n_namesz;
+    Elf32_Word n_descsz;
+    Elf32_Word n_type;
+} Elf32_Nhdr;
+
+typedef struct {
+    Elf32_Word ch_type;
+    Elf32_Word ch_size;
+    Elf32_Word ch_addralign;
+} Elf32_Chdr;
+
+typedef struct {
+    Elf64_Word ch_type;
+    Elf64_Word ch_reserved;
+    Elf64_Xword ch_size;
+    Elf64_Xword ch_addralign;
+} Elf64_Chdr;
+
 typedef struct {
     unsigned char e_ident[16];
     Elf64_Half    e_type;
@@ -41,7 +117,6 @@ typedef struct {
     Elf64_Half    e_shstrndx;
 } Elf64_Ehdr;
 
-/* 64-bit section header */
 typedef struct {
     Elf64_Word    sh_name;
     Elf64_Word    sh_type;
@@ -55,7 +130,6 @@ typedef struct {
     Elf64_Xword   sh_entsize;
 } Elf64_Shdr;
 
-/* 64-bit symbol table entry */
 typedef struct {
     Elf64_Word    st_name;
     unsigned char st_info;
@@ -65,7 +139,6 @@ typedef struct {
     Elf64_Xword   st_size;
 } Elf64_Sym;
 
-/* 64-bit relocation entries */
 typedef struct {
     Elf64_Addr    r_offset;
     Elf64_Xword   r_info;
@@ -77,7 +150,6 @@ typedef struct {
     Elf64_Sxword  r_addend;
 } Elf64_Rela;
 
-/* 64-bit program header */
 typedef struct {
     Elf64_Word    p_type;
     Elf64_Word    p_flags;
@@ -89,17 +161,14 @@ typedef struct {
     Elf64_Xword   p_align;
 } Elf64_Phdr;
 
-/* 64-bit note header */
 typedef struct {
     Elf64_Word n_namesz;
     Elf64_Word n_descsz;
     Elf64_Word n_type;
 } Elf64_Nhdr;
 
-/* Version symbol information */
 typedef Elf64_Half Elf64_Versym;
 
-/* Version definition */
 typedef struct {
     Elf64_Half    vd_version;
     Elf64_Half    vd_flags;
@@ -115,10 +184,8 @@ typedef struct {
     Elf64_Word    vda_next;
 } Elf64_Verdaux;
 
-/* ELF header constants */
 #define EI_NIDENT 16
 
-/* e_ident[] indexes */
 #define EI_MAG0     0
 #define EI_MAG1     1
 #define EI_MAG2     2
@@ -130,35 +197,29 @@ typedef struct {
 #define EI_ABIVERSION 8
 #define EI_PAD      9
 
-/* ELF magic number */
 #define ELFMAG0     0x7f
 #define ELFMAG1     'E'
 #define ELFMAG2     'L'
 #define ELFMAG3     'F'
 
-/* ELF class */
 #define ELFCLASSNONE  0
 #define ELFCLASS32    1
 #define ELFCLASS64    2
 
-/* Data encoding */
 #define ELFDATANONE   0
 #define ELFDATA2LSB   1
 #define ELFDATA2MSB   2
 
-/* e_type */
 #define ET_NONE   0
 #define ET_REL    1
 #define ET_EXEC   2
 #define ET_DYN    3
 #define ET_CORE   4
 
-/* e_machine */
 #define EM_NONE   0
 #define EM_X86_64 62
 #define EM_AARCH64 183
 
-/* Section header types */
 #define SHT_NULL          0
 #define SHT_PROGBITS      1
 #define SHT_SYMTAB        2
@@ -176,16 +237,13 @@ typedef struct {
 #define SHT_LOPROC        0x70000000
 #define SHT_HIPROC        0x7fffffff
 
-/* GNU extensions */
 #define SHT_GNU_VERSYM    0x6fffffff
 #define SHT_GNU_VERDEF    0x6ffffffd
 #define SHT_GNU_VERNEED   0x6ffffffe
-/* Lowercase aliases */
 #define SHT_GNU_versym    SHT_GNU_VERSYM
 #define SHT_GNU_verdef    SHT_GNU_VERDEF
 #define SHT_GNU_verneed   SHT_GNU_VERNEED
 
-/* Section header flags */
 #define SHF_WRITE            (1 << 0)
 #define SHF_ALLOC            (1 << 1)
 #define SHF_EXECINSTR        (1 << 2)
@@ -198,18 +256,15 @@ typedef struct {
 #define SHF_TLS              (1 << 10)
 #define SHF_COMPRESSED       (1 << 11)
 
-/* Special section indexes */
 #define SHN_UNDEF     0
 #define SHN_ABS       0xfff1
 #define SHN_COMMON    0xfff2
 #define SHN_LORESERVE 0xff00
 
-/* Symbol binding */
 #define STB_LOCAL   0
 #define STB_GLOBAL  1
 #define STB_WEAK    2
 
-/* Symbol types */
 #define STT_NOTYPE  0
 #define STT_OBJECT  1
 #define STT_FUNC    2
@@ -218,13 +273,11 @@ typedef struct {
 #define STT_COMMON  5
 #define STT_TLS     6
 
-/* Symbol visibility */
 #define STV_DEFAULT   0
 #define STV_INTERNAL  1
 #define STV_HIDDEN    2
 #define STV_PROTECTED 3
 
-/* Relocation table entry macros */
 #define ELF64_R_SYM(i)    ((i) >> 32)
 #define ELF64_R_TYPE(i)   ((i) & 0xffffffff)
 #define ELF64_R_INFO(s,t) (((s) << 32) + ((t) & 0xffffffff))
@@ -233,7 +286,6 @@ typedef struct {
 #define ELF32_R_TYPE(i)   ((unsigned char)(i))
 #define ELF32_R_INFO(s,t) (((s) << 8) + (unsigned char)(t))
 
-/* Symbol table entry macros */
 #define ELF64_ST_BIND(i)   ((i) >> 4)
 #define ELF64_ST_TYPE(i)   ((i) & 0xf)
 #define ELF64_ST_INFO(b,t) (((b) << 4) + ((t) & 0xf))
@@ -244,7 +296,6 @@ typedef struct {
 #define ELF32_ST_INFO(b,t) (((b) << 4) + ((t) & 0xf))
 #define ELF32_ST_VISIBILITY(o) ((o) & 0x03)
 
-/* Program header types */
 #define PT_NULL    0
 #define PT_LOAD    1
 #define PT_DYNAMIC 2
@@ -254,12 +305,10 @@ typedef struct {
 #define PT_PHDR    6
 #define PT_TLS     7
 
-/* Program header flags */
 #define PF_X  (1 << 0)
 #define PF_W  (1 << 1)
 #define PF_R  (1 << 2)
 
-/* Version constants */
 #define VER_DEF_CURRENT   1
 #define VER_NEED_CURRENT  1
 

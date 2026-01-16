@@ -14,7 +14,6 @@ object = { version = "0.36", default-features = false, features = ["read", "writ
 libc = "0.2"
 
 [build-dependencies]
-cbindgen = "0.27"
 
 [profile.release]
 lto = true
