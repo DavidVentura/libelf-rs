@@ -31,7 +31,7 @@ pub extern "C" fn elf_begin(fd: i32, cmd: ElfCmd, _ref_elf: *mut Elf) -> *mut El
             data: ptr::null(),
             data_len: 0,
             owned_data: None,
-            mmap_addr: None,
+            mmap: None,
             parsed: None,
             section_handles: Vec::new(),
             data_handles: Vec::new(),
@@ -41,37 +41,24 @@ pub extern "C" fn elf_begin(fd: i32, cmd: ElfCmd, _ref_elf: *mut Elf) -> *mut El
         return Box::into_raw(elf);
     }
 
-    let file_size = unsafe { libc::lseek(fd, 0, libc::SEEK_END) };
-    if file_size < 0 {
-        set_error("lseek failed");
-        return ptr::null_mut();
-    }
-    unsafe { libc::lseek(fd, 0, libc::SEEK_SET) };
-
-    let data_len = file_size as usize;
-    let mmap_addr = unsafe {
-        libc::mmap(
-            ptr::null_mut(),
-            data_len,
-            libc::PROT_READ,
-            libc::MAP_PRIVATE,
-            fd,
-            0,
-        )
+    let mmap = match memmap2::MmapOptions::new().map_raw(fd) {
+        Ok(m) => m,
+        Err(_) => {
+            set_error("mmap failed");
+            return ptr::null_mut();
+        }
     };
 
-    if mmap_addr == libc::MAP_FAILED {
-        set_error("mmap failed");
-        return ptr::null_mut();
-    }
+    let data_len = mmap.len();
+    let data_ptr = mmap.as_ptr();
 
     let elf = Box::new(Elf {
         fd,
         cmd,
-        data: mmap_addr as *const u8,
+        data: data_ptr,
         data_len,
         owned_data: None,
-        mmap_addr: Some(mmap_addr),
+        mmap: Some(mmap),
         parsed: None,
         section_handles: Vec::new(),
         data_handles: Vec::new(),
@@ -97,7 +84,7 @@ pub extern "C" fn elf_memory(image: *mut i8, size: usize) -> *mut Elf {
         data: ptr::null(),
         data_len: size,
         owned_data: Some(owned_data),
-        mmap_addr: None,
+        mmap: None,
         parsed: None,
         section_handles: Vec::new(),
         data_handles: Vec::new(),

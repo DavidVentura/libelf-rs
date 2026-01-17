@@ -4,6 +4,8 @@ use crate::types::*;
 use object::write::{Object as WriteObject, SectionKind};
 use object::{Architecture, BinaryFormat, Endianness};
 use std::ffi::c_void;
+use std::io::Write;
+use std::os::fd::FromRawFd;
 use std::ptr;
 
 type Elf64_Ehdr = object::elf::FileHeader64<Endianness>;
@@ -168,14 +170,12 @@ pub extern "C" fn elf_update(elf: *mut Elf, cmd: ElfCmd) -> i64 {
 
             match writer.obj.write() {
                 Ok(bytes) => {
-                    let written = unsafe {
-                        libc::write(elf_ref.fd, bytes.as_ptr() as *const c_void, bytes.len())
-                    };
-                    if written < 0 {
-                        set_error("write failed");
+                    let mut f = unsafe { std::fs::File::from_raw_fd(elf_ref.fd) };
+                    if let Err(e) = f.write_all(&bytes) {
+                        set_error(&format!("write failed: {e:?}"));
                         return -1;
-                    }
-                    written as i64
+                    };
+                    bytes.len() as i64
                 }
                 Err(_) => {
                     set_error("failed to write ELF");

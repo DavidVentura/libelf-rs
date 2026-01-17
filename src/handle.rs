@@ -3,7 +3,6 @@ use crate::types::*;
 use object::read::elf::{ElfFile32, ElfFile64, FileHeader, ProgramHeader, SectionHeader};
 use object::write::Object as WriteObject;
 use object::{Endianness, FileKind, SectionIndex};
-use std::ffi::c_void;
 
 pub enum ParsedElf<'a> {
     Elf32(ElfFile32<'a, Endianness>),
@@ -223,7 +222,7 @@ pub struct Elf {
     pub data: *const u8,
     pub data_len: usize,
     pub owned_data: Option<Vec<u8>>,
-    pub mmap_addr: Option<*mut c_void>,
+    pub mmap: Option<memmap2::MmapRaw>,
     pub parsed: Option<Box<ParsedElfOwned>>,
     pub section_handles: Vec<*mut Elf_Scn>,
     pub data_handles: Vec<*mut Elf_Data>,
@@ -280,11 +279,6 @@ impl Drop for Elf {
         for handle in self.data_handles.drain(..) {
             unsafe {
                 drop(Box::from_raw(handle));
-            }
-        }
-        if let Some(addr) = self.mmap_addr {
-            unsafe {
-                libc::munmap(addr, self.data_len);
             }
         }
     }
