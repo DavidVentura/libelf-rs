@@ -15,3 +15,13 @@ pub use types::*;
 pub use error::{elf_errmsg, elf_errno};
 pub use read::*;
 pub use write::*;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_elf_version() {
+        assert_eq!(elf_version(0), 1);
+    }
+}

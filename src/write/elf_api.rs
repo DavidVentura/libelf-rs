@@ -3,7 +3,6 @@ use crate::handle::{Elf, Elf_Scn, WriteState};
 use crate::types::*;
 use object::write::{Object as WriteObject, SectionKind};
 use object::{Architecture, BinaryFormat, Endianness};
-use std::ffi::c_void;
 use std::io::Write;
 use std::os::fd::FromRawFd;
 use std::ptr;
