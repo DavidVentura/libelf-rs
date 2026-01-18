@@ -1,0 +1,72 @@
+# ELF magic and identification
+"\x7fELF"
+
+# ELF class
+"\x01"
+"\x02"
+
+# ELF data encoding
+"\x01"
+"\x02"
+
+# ELF version
+"\x01"
+
+# Section header types (little-endian 32-bit)
+"\x00\x00\x00\x00"
+"\x01\x00\x00\x00"
+"\x02\x00\x00\x00"
+"\x03\x00\x00\x00"
+"\x04\x00\x00\x00"
+"\x05\x00\x00\x00"
+"\x06\x00\x00\x00"
+"\x07\x00\x00\x00"
+"\x08\x00\x00\x00"
+"\x09\x00\x00\x00"
+
+# Special section indices
+"\x00\x00"
+"\xff\xff"
+
+# Common section names
+".text"
+".data"
+".bss"
+".rodata"
+".symtab"
+".strtab"
+".shstrtab"
+".dynsym"
+".dynstr"
+".rela.text"
+".rel.text"
+".comment"
+".note"
+".debug"
+".maps"
+".BTF"
+".BTF.ext"
+
+# BPF-specific sections
+"license"
+"version"
+"maps"
+"SEC"
+"kprobe"
+"tracepoint"
+
+# Program header types (little-endian 32-bit)
+"\x00\x00\x00\x00"
+"\x01\x00\x00\x00"
+"\x02\x00\x00\x00"
+"\x03\x00\x00\x00"
+"\x04\x00\x00\x00"
+
+# Common alignment values
+"\x01\x00\x00\x00"
+"\x04\x00\x00\x00"
+"\x08\x00\x00\x00"
+"\x10\x00\x00\x00"
+
+# String table null terminator
+"\x00"
