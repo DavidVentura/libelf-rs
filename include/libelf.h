@@ -109,8 +109,13 @@ char *elf_strptr(Elf *elf, size_t section, size_t offset);
 unsigned int elf_flagdata(Elf_Data *data, Elf_Cmd cmd, unsigned int flags);
 unsigned int elf_flagshdr(Elf_Scn *scn, Elf_Cmd cmd, unsigned int flags);
 
+Elf_Scn *elf_newscn(Elf *elf);
+Elf_Data *elf_newdata(Elf_Scn *scn);
+int64_t elf_update(Elf *elf, Elf_Cmd cmd);
+
 Elf64_Ehdr *elf64_getehdr(Elf *elf);
 Elf64_Shdr *elf64_getshdr(Elf_Scn *scn);
+Elf64_Ehdr *elf64_newehdr(Elf *elf);
 
 int elf_errno(void);
 const char *elf_errmsg(int error);
